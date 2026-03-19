@@ -8,7 +8,7 @@ class RightGroupService:
     def __init__(self, group_repo: IRightGroupRepository):
         self.group_repo = group_repo
 
-    async def get_right_group(self, group_id: int) -> RightGroupDTO | None:
+    async def get_right_group(self, group_id: int) -> RightGroupDTO:
         group = await self.group_repo.get_by_id(group_id)
         if group is None:
             raise GroupNotExistsError(group_id)
