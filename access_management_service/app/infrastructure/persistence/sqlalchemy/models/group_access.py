@@ -11,8 +11,12 @@ if TYPE_CHECKING:
 
 
 class GroupAccessORM(Base):
-    group_id: Mapped[int] = mapped_column(ForeignKey('rightgrouporm.id'), nullable=False)
-    access_id: Mapped[int] = mapped_column(ForeignKey('accessorm.id'), nullable=False)
+    group_id: Mapped[int] = mapped_column(
+        ForeignKey('rightgrouporm.id', ondelete='CASCADE'), nullable=False
+    )
+    access_id: Mapped[int] = mapped_column(
+        ForeignKey('accessorm.id', ondelete='CASCADE'), nullable=False
+    )
 
     group: Mapped['RightGroupORM'] = relationship(back_populates='accesses')
     access: Mapped['AccessORM'] = relationship(back_populates='groups')

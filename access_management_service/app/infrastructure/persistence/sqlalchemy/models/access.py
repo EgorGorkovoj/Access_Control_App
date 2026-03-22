@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import ForeignKey, String, Text
+from sqlalchemy import ForeignKey, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infrastructure.persistence.sqlalchemy.models.base import Base
@@ -17,3 +17,5 @@ class AccessORM(Base):
 
     resource: Mapped['ResourceORM'] = relationship(back_populates='accesses')
     groups: Mapped[list['GroupAccessORM']] = relationship(back_populates='access')
+
+    __table_args__ = (UniqueConstraint('name', 'resource_id', name='uq_access_name_resource'),)

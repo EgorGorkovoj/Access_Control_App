@@ -10,13 +10,21 @@ class IResourceRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_name(self, name: str) -> Resource | None:
+    async def get_all(self, limit: int | None, offset: int) -> Sequence[Resource]:
         pass
 
     @abstractmethod
-    async def get_all(self, skip: int = 0, limit: int = 100) -> Sequence[Resource]:
+    async def get_by_name_and_type(self, name: str, type: str) -> Resource | None:
         pass
 
     @abstractmethod
     async def create(self, resource: Resource) -> Resource:
+        pass
+
+    @abstractmethod
+    async def update(self, resource: Resource) -> Resource | None:
+        pass
+
+    @abstractmethod
+    async def delete(self, resource_id: int) -> bool:
         pass

@@ -1,6 +1,6 @@
 from typing import TYPE_CHECKING
 
-from sqlalchemy import String
+from sqlalchemy import String, UniqueConstraint
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -19,3 +19,5 @@ class ResourceORM(Base):
     accesses: Mapped[list['AccessORM']] = relationship(
         back_populates='resource', cascade='all, delete-orphan'
     )
+
+    __table_args__ = (UniqueConstraint('name', 'type', name='uq_resource_name_type'),)
