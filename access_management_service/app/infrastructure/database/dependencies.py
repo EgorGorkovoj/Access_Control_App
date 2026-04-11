@@ -8,11 +8,13 @@ from app.application.services.group_access_service import GroupAccessService
 from app.application.services.group_conflict_service import GroupConflictService
 from app.application.services.resource_service import ResourceService
 from app.application.services.right_group_service import RightGroupService
+from app.application.services.user_group_service import UserGroupService
 from app.domain.repositories.access_repository import IAccessRepository
 from app.domain.repositories.group_access_repository import IGroupAccessRepository
 from app.domain.repositories.group_conflict_repository import IGroupConflictRepository
 from app.domain.repositories.group_repository import IRightGroupRepository
 from app.domain.repositories.resource_repository import IResourceRepository
+from app.domain.repositories.user_group_repository import IUserGroupRepository
 from app.infrastructure.database.connection import AsyncSessionLocal
 from app.infrastructure.persistence.sqlalchemy.repositories.access import (
     SQLAlchemyAccessRepository,
@@ -28,6 +30,9 @@ from app.infrastructure.persistence.sqlalchemy.repositories.resource import (
 )
 from app.infrastructure.persistence.sqlalchemy.repositories.right_group import (
     SQLAlchemyRightGroupRepository,
+)
+from app.infrastructure.persistence.sqlalchemy.repositories.user_group import (
+    SQLAlchemyUserGroupRepository,
 )
 
 
@@ -113,3 +118,17 @@ def get_group_access_service_impl(
     return GroupAccessService(
         group_access_repo=group_access_repo, group_repo=group_repo, access_repo=access_repo
     )
+
+
+def get_user_group_repository_impl(
+    db_session: AsyncSession = Depends(get_async_session),
+) -> IUserGroupRepository:
+    """Зависимость для предоставления конкретной реализации IUserGroupRepository."""
+    return SQLAlchemyUserGroupRepository(db_session)
+
+
+def get_user_group_service_impl(
+    user_group_repo: IUserGroupRepository = Depends(get_user_group_repository_impl),
+    group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
+) -> UserGroupService:
+    return UserGroupService(user_group_repo=user_group_repo, group_repo=group_repo)

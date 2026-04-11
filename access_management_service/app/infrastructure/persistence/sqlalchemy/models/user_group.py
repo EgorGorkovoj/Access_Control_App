@@ -11,7 +11,9 @@ if TYPE_CHECKING:
 
 class UserGroupORM(Base):
     user_id: Mapped[int] = mapped_column(nullable=False)
-    group_id: Mapped[int] = mapped_column(ForeignKey('rightgrouporm.id'), nullable=False)
+    group_id: Mapped[int] = mapped_column(
+        ForeignKey('rightgrouporm.id', ondelete='CASCADE'), nullable=False
+    )
 
     group: Mapped['RightGroupORM'] = relationship(back_populates='users')
 

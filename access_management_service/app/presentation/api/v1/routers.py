@@ -6,6 +6,7 @@ from app.presentation.api.v1.endpoints import (
     group_conflict_router,
     resource_router,
     right_group_router,
+    user_group_router,
 )
 
 main_router = APIRouter(prefix='/api/v1')
@@ -15,3 +16,4 @@ main_router.include_router(group_conflict_router, tags=['Group Conflict'])
 main_router.include_router(resource_router, tags=['Resource'])
 main_router.include_router(access_router, tags=['Access'])
 main_router.include_router(group_access_router, tags=['Group Access'])
+main_router.include_router(user_group_router, tags=['User Group'])
