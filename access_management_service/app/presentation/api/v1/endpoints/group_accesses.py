@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
 from app.application.services.group_access_service import GroupAccessService
-from app.interface_adapters.dtos.group_access import GroupAccessResponse
+from app.interface_adapters.dtos.group_access import GroupAccessIdsResponse, GroupAccessResponse
 from app.presentation.dependencies import get_group_access_service
 
 router = APIRouter()
@@ -27,7 +27,7 @@ async def remove_permission_from_group(
 @router.get('/groups/{group_id}/accesses', status_code=status.HTTP_200_OK)
 async def get_group_accesses(
     group_id: int, service: GroupAccessService = Depends(get_group_access_service)
-) -> list[GroupAccessResponse]:
+) -> GroupAccessIdsResponse:
     """Возвращает список accesses группы."""
-    group_accesses_dto = await service.get_group_accesses(group_id)
-    return [GroupAccessResponse.from_dto(group_access) for group_access in group_accesses_dto]
+    group_accesses = await service.get_group_accesses(group_id)
+    return GroupAccessIdsResponse(access_ids=group_accesses)

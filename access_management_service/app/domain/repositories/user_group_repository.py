@@ -17,5 +17,9 @@ class IUserGroupRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_user_id(self, user_id: int) -> list[UserGroup]:
+    async def get_all_by_user_id(self, user_id: int) -> list[int]:
+        pass
+
+    @abstractmethod
+    async def get_user_group(self, user_group: UserGroup) -> UserGroup | None:
         pass

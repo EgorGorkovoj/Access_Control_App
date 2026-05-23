@@ -66,10 +66,23 @@ class SQLAlchemyUserGroupRepository(IUserGroupRepository):
 
         return True
 
-    async def get_by_user_id(self, user_id: int) -> list[UserGroup]:
+    async def get_all_by_user_id(self, user_id: int) -> list[int]:
         user_groups_orm = await self.db_session.execute(
-            select(UserGroupORM).where(UserGroupORM.user_id == user_id)
+            select(UserGroupORM.group_id).where(UserGroupORM.user_id == user_id)
         )
-        user_groups = user_groups_orm.scalars().all()
+        return user_groups_orm.scalars().all()
 
-        return [self._to_domain_model(user_group) for user_group in user_groups]
+    async def get_user_group(self, user_group: UserGroup) -> UserGroup | None:
+        stmt = select(UserGroupORM).where(
+            UserGroupORM.user_id == user_group.user_id,
+            UserGroupORM.group_id == user_group.group_id,
+        )
+
+        result = await self.db_session.execute(stmt)
+
+        orm = result.scalar_one_or_none()
+
+        if orm is None:
+            return None
+
+        return self._to_domain_model(orm)

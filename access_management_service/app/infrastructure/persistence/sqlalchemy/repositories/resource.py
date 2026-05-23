@@ -2,7 +2,7 @@ from sqlalchemy import Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.domain.models.resource import Resource
+from app.domain.models.resource import Resource, ResourceCreate
 from app.domain.repositories.resource_repository import IResourceRepository
 from app.infrastructure.logging.logger import get_logger
 from app.infrastructure.persistence.sqlalchemy.models.resource import ResourceORM
@@ -20,14 +20,23 @@ class SQLAlchemyResourceRepository(IResourceRepository):
             name=orm_model.name,
             type=orm_model.type,
             attributes=orm_model.attributes,
+            is_active=orm_model.is_active,
         )
 
-    def _to_orm_model(self, domain_model: Resource) -> ResourceORM:
+    def _to_orm_model(self, domain_model: Resource | ResourceCreate) -> ResourceORM:
+        if isinstance(domain_model, ResourceCreate):
+            return ResourceORM(
+                name=domain_model.name,
+                type=domain_model.type,
+                attributes=domain_model.attributes or {},
+                is_active=domain_model.is_active,
+            )
         return ResourceORM(
             id=domain_model.id,
             name=domain_model.name,
             type=domain_model.type,
             attributes=domain_model.attributes or {},
+            is_active=domain_model.is_active,
         )
 
     def _apply_limit_offset(self, query: Select, limit: int, offset: int) -> Select:
@@ -59,9 +68,8 @@ class SQLAlchemyResourceRepository(IResourceRepository):
 
         return self._to_domain_model(orm_resource)
 
-    async def create(self, resource: Resource) -> Resource:
+    async def create(self, resource: ResourceCreate) -> Resource:
         orm_resource = self._to_orm_model(resource)
-
         try:
             self.db_session.add(orm_resource)
             await self.db_session.commit()
@@ -69,27 +77,30 @@ class SQLAlchemyResourceRepository(IResourceRepository):
             logger.info('Ресурс успешно создан!')
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка при создании ресурса: {error}')
+            logger.error(f'Ошибка при создании {orm_resource.__class__.__name__}: {error}')
             raise
 
         return self._to_domain_model(orm_resource)
 
-    async def update(self, resource: Resource) -> Resource | None:
+    async def update(self, resource: Resource) -> Resource:
         orm_resource = await self.db_session.get(ResourceORM, resource.id)
 
         if orm_resource is None:
-            return None
+            raise RuntimeError(f'Resource {resource.id} not found during update')
 
         orm_resource.name = resource.name
         orm_resource.type = resource.type
         orm_resource.attributes = resource.attributes
+        orm_resource.is_active = resource.is_active
 
         try:
             await self.db_session.commit()
             await self.db_session.refresh(orm_resource)
         except SQLAlchemyError as error:
+            await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при обновлении данных в ' f'{Resource.__name__}: {error}!'  # type: ignore
+                'Произошла ошибка при обновлении данных в '
+                f'{orm_resource.__class__.__name__}: {error}!'
             )
             raise
 
@@ -107,7 +118,8 @@ class SQLAlchemyResourceRepository(IResourceRepository):
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при удалении данных из ' f'{ResourceORM.__name__}: {error}!'
+                'Произошла ошибка при удалении данных из '
+                f'{orm_resource.__class__.__name__}: {error}!'
             )
             raise
         return True

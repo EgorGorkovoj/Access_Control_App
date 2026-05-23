@@ -64,9 +64,8 @@ class SQLAlchemyGroupAccessRepository(IGroupAccessRepository):
 
         return True
 
-    async def get_by_group_id(self, group_id: int) -> list[GroupAccess]:
+    async def get_by_group_id(self, group_id: int) -> list[int]:
         group_access_orm = await self.db_session.execute(
-            select(GroupAccessORM).where(GroupAccessORM.group_id == group_id)
+            select(GroupAccessORM.access_id).where(GroupAccessORM.group_id == group_id)
         )
-        group_accesses = group_access_orm.scalars().all()
-        return [self._to_domain(group_access) for group_access in group_accesses]
+        return group_access_orm.scalars().all()

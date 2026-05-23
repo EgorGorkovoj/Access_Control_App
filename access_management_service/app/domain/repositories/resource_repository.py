@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Sequence
 
-from app.domain.models.resource import Resource
+from app.domain.models.resource import Resource, ResourceCreate
 
 
 class IResourceRepository(ABC):
@@ -18,11 +18,11 @@ class IResourceRepository(ABC):
         pass
 
     @abstractmethod
-    async def create(self, resource: Resource) -> Resource:
+    async def create(self, resource: ResourceCreate) -> Resource:
         pass
 
     @abstractmethod
-    async def update(self, resource: Resource) -> Resource | None:
+    async def update(self, resource: Resource) -> Resource:
         pass
 
     @abstractmethod

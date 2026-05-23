@@ -19,4 +19,6 @@ pluggy==1.6.0
 Pygments==2.19.2
 PyYAML==6.0.3
 typing_extensions==4.15.0
-virtualenv==20.37.0
+aiokafka==0.13.0
+pydantic-settings==2.13.1
+httpx==0.28.1

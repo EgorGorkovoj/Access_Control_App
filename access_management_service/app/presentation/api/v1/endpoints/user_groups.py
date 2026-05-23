@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, status
 
 from app.application.services.user_group_service import UserGroupService
-from app.interface_adapters.dtos.user_group import UserGroupResponse
+from app.interface_adapters.dtos.user_group import UserGroupIdsResponse, UserGroupResponse
 from app.presentation.dependencies import get_user_group_service
 
 router = APIRouter()
@@ -25,6 +25,6 @@ async def remove_user_from_group(
 @router.get('/users/{user_id}/groups', status_code=status.HTTP_200_OK)
 async def get_user_groups(
     user_id: int, service: UserGroupService = Depends(get_user_group_service)
-) -> list[UserGroupResponse]:
-    user_groups = await service.get_user_groups(user_id)
-    return [UserGroupResponse.from_dto(user_group) for user_group in user_groups]
+) -> UserGroupIdsResponse:
+    group_ids = await service.get_user_groups_ids(user_id=user_id)
+    return UserGroupIdsResponse(group_ids=group_ids)

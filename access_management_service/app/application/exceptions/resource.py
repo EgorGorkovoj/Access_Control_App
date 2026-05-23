@@ -14,4 +14,4 @@ class ResourceNotExistsError(AppException):
     status_code = 404
 
     def __init__(self, resource_id: int):
-        super().__init__(f'Ресурса с id "{resource_id}" не существует!')
+        super().__init__(f'Ресурса с id:{resource_id} не существует!')

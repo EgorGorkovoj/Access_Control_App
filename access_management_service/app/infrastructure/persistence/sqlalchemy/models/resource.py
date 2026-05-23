@@ -11,10 +11,10 @@ if TYPE_CHECKING:
 
 
 class ResourceORM(Base):
-    id: Mapped[int] = mapped_column(primary_key=True)
     name: Mapped[str] = mapped_column(String(256), nullable=False)
     type: Mapped[str] = mapped_column(String(100), nullable=False)
     attributes: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    is_active: Mapped[bool] = mapped_column(default=True)
 
     accesses: Mapped[list['AccessORM']] = relationship(
         back_populates='resource', cascade='all, delete-orphan'

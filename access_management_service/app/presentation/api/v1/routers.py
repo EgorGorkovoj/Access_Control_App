@@ -4,9 +4,11 @@ from app.presentation.api.v1.endpoints import (
     access_router,
     group_access_router,
     group_conflict_router,
+    request_router,
     resource_router,
     right_group_router,
     user_group_router,
+    user_permissions_router,
 )
 
 main_router = APIRouter(prefix='/api/v1')
@@ -17,3 +19,5 @@ main_router.include_router(resource_router, tags=['Resource'])
 main_router.include_router(access_router, tags=['Access'])
 main_router.include_router(group_access_router, tags=['Group Access'])
 main_router.include_router(user_group_router, tags=['User Group'])
+main_router.include_router(request_router, tags=['Request'])
+main_router.include_router(user_permissions_router, tags=['User Permission'])

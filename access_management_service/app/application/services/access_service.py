@@ -1,7 +1,7 @@
 from app.application.dtos.access_dto import AccessDTO, CreateAccessDTO
 from app.application.exceptions.access import AccessAlreadyExistsError, AccessNotFoundError
 from app.application.exceptions.resource import ResourceNotExistsError
-from app.domain.models.access import Access
+from app.domain.models.access import AccessCreate
 from app.domain.repositories.access_repository import IAccessRepository
 from app.domain.repositories.resource_repository import IResourceRepository
 
@@ -21,7 +21,13 @@ class AccessService:
         if existing:
             raise AccessAlreadyExistsError(dto.name, dto.resource_id)
 
-        access = Access(name=dto.name, description=dto.description, resource_id=dto.resource_id)
+        access = AccessCreate(
+            name=dto.name,
+            description=dto.description,
+            resource_id=dto.resource_id,
+            credentials=dto.credentials,
+            is_active=dto.is_active,
+        )
 
         created = await self.access_repo.create(access)
 
@@ -30,14 +36,23 @@ class AccessService:
             name=created.name,
             description=created.description,
             resource_id=created.resource_id,
+            credentials=created.credentials,
+            is_active=created.is_active,
         )
 
     async def get_accesses(self, limit: int | None, offset: int):
         accesses = await self.access_repo.get_all(limit, offset)
 
         return [
-            AccessDTO(id=a.id, name=a.name, description=a.description, resource_id=a.resource_id)
-            for a in accesses
+            AccessDTO(
+                id=access.id,
+                name=access.name,
+                description=access.description,
+                resource_id=access.resource_id,
+                credentials=access.credentials,
+                is_active=access.is_active,
+            )
+            for access in accesses
         ]
 
     async def get_access(self, access_id: int) -> AccessDTO:
@@ -51,6 +66,8 @@ class AccessService:
             name=access.name,
             description=access.description,
             resource_id=access.resource_id,
+            credentials=access.credentials,
+            is_active=access.is_active,
         )
 
     async def delete_access(self, access_id: int):

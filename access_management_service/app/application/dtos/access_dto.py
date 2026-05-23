@@ -1,16 +1,21 @@
 from dataclasses import dataclass
+from typing import Any
 
 
 @dataclass
 class AccessDTO:
-    id: int | None
+    id: int
     name: str
-    description: str | None
     resource_id: int
+    credentials: dict[str, Any]
+    description: str | None = None
+    is_active: bool = True
 
 
 @dataclass
 class CreateAccessDTO:
     name: str
-    description: str | None
     resource_id: int
+    credentials: dict[str, Any]
+    description: str | None = None
+    is_active: bool = True

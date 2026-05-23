@@ -1,6 +1,15 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.application.dtos.group_conflict_dto import GroupConflictDTO
+
+
+class GroupConflictsIDSResponse(BaseModel):
+    """Ответ с ID конфликтующих групп"""
+
+    group_id: int
+    conflicting_group_ids: list[int]
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class GroupConflictResponse(BaseModel):

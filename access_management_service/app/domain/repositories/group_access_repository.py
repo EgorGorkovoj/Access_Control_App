@@ -17,5 +17,5 @@ class IGroupAccessRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_by_group_id(self, group_id: int) -> list[GroupAccess]:
+    async def get_by_group_id(self, group_id: int) -> list[int]:
         pass

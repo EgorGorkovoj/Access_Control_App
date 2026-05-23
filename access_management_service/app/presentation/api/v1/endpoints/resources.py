@@ -1,12 +1,14 @@
 from fastapi import APIRouter, Depends, Query, status
 
+from app.application.services.resource_access_service import ResourceAccessService
 from app.application.services.resource_service import ResourceService
 from app.interface_adapters.dtos.resource import (
     ResourceCreate,
     ResourceResponse,
     ResourceUpdate,
 )
-from app.presentation.dependencies import get_resource_service
+from app.interface_adapters.dtos.resource_accesses import ResourceAccessesResponse
+from app.presentation.dependencies import get_resource_access_service, get_resource_service
 
 router = APIRouter()
 
@@ -40,6 +42,18 @@ async def get_resource(
     """Возвращает один ресурс по id."""
     resource = await resource_service.get_resource(resource_id)
     return ResourceResponse.from_dto(resource)
+
+
+@router.get(
+    '/resources/{resource_id}/accesses',
+    status_code=status.HTTP_200_OK,
+    response_model=ResourceAccessesResponse,
+)
+async def get_resource_accesses(
+    resource_id: int, service: ResourceAccessService = Depends(get_resource_access_service)
+) -> ResourceAccessesResponse:
+    dto = await service.get_accesses_by_resource(resource_id)
+    return ResourceAccessesResponse.from_dto(dto)
 
 
 @router.patch('/resources/{resource_id}', status_code=status.HTTP_200_OK)

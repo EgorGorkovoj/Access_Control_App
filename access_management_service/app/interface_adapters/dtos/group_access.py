@@ -1,6 +1,14 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict
 
 from app.application.dtos.group_access_dto import GroupAccessDTO
+
+
+class GroupAccessIdsResponse(BaseModel):
+    """Список ID доступов пользователя для определенной группы."""
+
+    access_ids: list[int]
+
+    model_config = ConfigDict(from_attributes=True)
 
 
 class GroupAccessResponse(BaseModel):

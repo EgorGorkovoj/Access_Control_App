@@ -36,10 +36,5 @@ class UserGroupService:
         if not deleted:
             raise UserGroupNotFoundError(user_id, group_id)
 
-    async def get_user_groups(self, user_id: int) -> list[UserGroupDTO]:
-        user_groups = await self.user_group_repo.get_by_user_id(user_id)
-
-        return [
-            UserGroupDTO(user_id=user_group.user_id, group_id=user_group.group_id)
-            for user_group in user_groups
-        ]
+    async def get_user_groups_ids(self, user_id: int) -> list[int]:
+        return await self.user_group_repo.get_all_by_user_id(user_id)

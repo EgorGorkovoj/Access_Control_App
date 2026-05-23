@@ -1,20 +1,22 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Any
 
 
 @dataclass
 class ResourceDTO:
-    id: int | None
+    id: int
     name: str
     type: str
-    attributes: dict[str, Any]
+    is_active: bool
+    attributes: dict[str, Any] = field(default_factory=dict)
 
 
 @dataclass
 class CreateResourceDTO:
     name: str
     type: str
-    attributes: dict[str, Any]
+    attributes: dict[str, Any] = field(default_factory=dict)
+    is_active: bool = True
 
 
 @dataclass
@@ -23,3 +25,4 @@ class UpdateResourceDTO:
     name: str | None = None
     type: str | None = None
     attributes: dict[str, Any] | None = None
+    is_active: bool | None = None

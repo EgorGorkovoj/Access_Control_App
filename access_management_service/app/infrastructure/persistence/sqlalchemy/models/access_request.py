@@ -10,7 +10,7 @@ from app.infrastructure.persistence.sqlalchemy.models.base import Base, PreBase
 
 class RequestStatus(StrEnum):
     PENDING = 'pending'
-    IN_PROGRESS = 'in_progress'
+    IN_PROGRESS = 'in progress'
     APPROVED = 'approved'
     REJECTED = 'rejected'
 
@@ -39,7 +39,7 @@ class AccessRequestORM(Base):
 class AccessRequestStatusHistoryORM(PreBase):
     __tablename__ = 'access_request_status_history'
 
-    request_id: Mapped[int] = mapped_column(ForeignKey('accessrequestorm.id'), primary_key=True)
+    request_pk: Mapped[int] = mapped_column(ForeignKey('accessrequestorm.id'), primary_key=True)
     changed_at: Mapped[datetime] = mapped_column(
         TIMESTAMP(timezone=True), server_default=func.now(), primary_key=True
     )

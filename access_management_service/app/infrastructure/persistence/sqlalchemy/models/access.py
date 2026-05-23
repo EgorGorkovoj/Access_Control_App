@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, String, Text, UniqueConstraint
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.infrastructure.persistence.sqlalchemy.models.base import Base
@@ -12,8 +13,10 @@ if TYPE_CHECKING:
 
 class AccessORM(Base):
     name: Mapped[str] = mapped_column(String(256), nullable=False, unique=True)
-    description: Mapped[str] = mapped_column(Text)
+    description: Mapped[str | None] = mapped_column(Text, nullable=True)
     resource_id: Mapped[int] = mapped_column(ForeignKey('resourceorm.id'), nullable=False)
+    credentials: Mapped[dict] = mapped_column(JSONB, nullable=False, default=dict)
+    is_active: Mapped[bool] = mapped_column(default=True)
 
     resource: Mapped['ResourceORM'] = relationship(back_populates='accesses')
     groups: Mapped[list['GroupAccessORM']] = relationship(back_populates='access')

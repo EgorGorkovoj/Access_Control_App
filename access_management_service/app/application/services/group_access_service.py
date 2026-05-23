@@ -47,14 +47,9 @@ class GroupAccessService:
         if not deleted:
             raise GroupAccessNotFoundError(group_id, access_id)
 
-    async def get_group_accesses(self, group_id: int) -> list[GroupAccessDTO]:
+    async def get_group_accesses(self, group_id: int) -> list[int]:
         group = await self.group_repo.get_by_id(group_id)
         if not group:
             raise GroupNotExistsError(group_id)
 
-        relations = await self.group_access_repo.get_by_group_id(group_id)
-
-        return [
-            GroupAccessDTO(group_id=relation.group_id, access_id=relation.access_id)
-            for relation in relations
-        ]
+        return await self.group_access_repo.get_by_group_id(group_id)

@@ -18,10 +18,15 @@ class ResourceUpdate(BaseModel):
     name: str | None = None
     type: str | None = None
     attributes: dict[str, Any] | None = None
+    is_active: bool | None = None
 
     def to_dto(self, resource_id: int) -> UpdateResourceDTO:
         return UpdateResourceDTO(
-            id=resource_id, name=self.name, type=self.type, attributes=self.attributes
+            id=resource_id,
+            name=self.name,
+            type=self.type,
+            attributes=self.attributes,
+            is_active=self.is_active,
         )
 
 
