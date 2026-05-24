@@ -24,11 +24,10 @@ class AccessManagementPermissionProvider(IUserPermissionProvider):
         )
 
         data = response.json()
-
+        print(data)
         return UserPermissionsDTO(
             user_id=data['user_id'],
-            user_accesses=data['user_accesses'],
-            user_groups=data.get('user_groups'),
-            accesses_destination_group=data.get('accesses_destination_group'),
-            conflicting_groups=data.get('conflicting_groups'),
+            user_groups=data.get('user_groups'),  # ['user_groups']
+            conflicting_groups=data.get('conflicting_groups'),  # ['conflicting_groups'],
+            conflicting_accesses=data.get('conflicting_accesses'),  # ['conflicting_accesses'],
         )

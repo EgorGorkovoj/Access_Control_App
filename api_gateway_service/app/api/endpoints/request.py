@@ -35,7 +35,7 @@ async def create_access_request(
         'target_id': body.target_id,
     }
     try:
-        await client.post('api/v1/request', json=event)
+        await client.post('/api/v1/request', json=event)
     except Exception as error:
         logger.error(
             f'Failed to call access_management service:{error}',

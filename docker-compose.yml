@@ -40,6 +40,8 @@ services:
       - kafka
     ports:
       - "8001:8000"  # убрать позже
+    env_file:
+      - ./access_management_service/.env
     environment:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
