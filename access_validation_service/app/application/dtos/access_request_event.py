@@ -13,9 +13,3 @@ class ValidationRequestDTO:
     user_id: int
     target_type: TargetType
     target_id: int
-
-
-# class AccessRequestEvent(BaseModel):
-#     request_id: str
-#     user_id: int
-#     group_id: int

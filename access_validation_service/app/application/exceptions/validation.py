@@ -1,15 +1,9 @@
 class ValidationError(Exception):
-    """Базовая ошибка валидации."""
-
     pass
 
 
 class GroupConflictError(ValidationError):
-    def __init__(
-        self,
-        user_id: int,
-        target_group_id: int,
-    ):
+    def __init__(self, user_id: int, target_group_id: int):
         self.user_id = user_id
         self.target_group_id = target_group_id
 
@@ -19,11 +13,7 @@ class GroupConflictError(ValidationError):
 
 
 class AccessConflictError(ValidationError):
-    def __init__(
-        self,
-        user_id: int,
-        access_id: int,
-    ):
+    def __init__(self, user_id: int, access_id: int):
         self.user_id = user_id
         self.access_id = access_id
 
