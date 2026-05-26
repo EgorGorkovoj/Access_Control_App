@@ -23,19 +23,14 @@ class ValidationApplication:
         )
 
         await self.client.start()
-
         validation_service = get_validation_service(self.client)
-
         handler = AccessRequestHandler(validation_service)
-
         self.consumer = KafkaConsumerClient(
             topic=settings.ACCESSES_TOPIC,
             handler=handler.handle,
             group_id=settings.KAFKA_CONSUMER_GROUP,
         )
-
         await self.consumer.start()
-
         logger.info('Validation Service started')
 
     async def stop(self) -> None:
@@ -49,14 +44,10 @@ class ValidationApplication:
 
     async def run(self) -> None:
         await self.start()
-
         if self.consumer is None:
             raise RuntimeError('Consumer not initialized')
-
         try:
             logger.info('Validation Service started')
-
             await self.consumer.run()
-
         finally:
             await self.stop()
