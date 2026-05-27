@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from typing import Sequence
 
 from app.domain.models.right_group import RightGroup
 
@@ -10,7 +9,7 @@ class IRightGroupRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_all(self, limit: int | None, offset: int) -> Sequence[RightGroup]:
+    async def get_all(self, limit: int | None, offset: int) -> list[RightGroup]:
         pass
 
     @abstractmethod
@@ -22,7 +21,7 @@ class IRightGroupRepository(ABC):
         pass
 
     @abstractmethod
-    async def update(self, group: RightGroup) -> RightGroup | None:
+    async def update(self, group: RightGroup) -> RightGroup:
         pass
 
     @abstractmethod

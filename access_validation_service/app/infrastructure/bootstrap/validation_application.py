@@ -1,3 +1,5 @@
+import asyncio
+
 from app.infrastructure.config.settings import settings
 from app.infrastructure.dependencies import (
     get_validation_service,
@@ -16,38 +18,53 @@ class ValidationApplication:
         self.consumer: KafkaConsumerClient | None = None
 
     async def start(self) -> None:
+        """
+        Initialize infrastructure and start background consumers.
+        """
         logger.info('Starting Validation Service...')
-
         self.client = AccessManagementClient(
             base_url=settings.ACCESS_MANAGEMENT_SERVICE_URL,
         )
-
         await self.client.start()
         validation_service = get_validation_service(self.client)
         handler = AccessRequestHandler(validation_service)
+
         self.consumer = KafkaConsumerClient(
             topic=settings.ACCESSES_TOPIC,
             handler=handler.handle,
             group_id=settings.KAFKA_CONSUMER_GROUP,
         )
+
         await self.consumer.start()
+
         logger.info('Validation Service started')
 
     async def stop(self) -> None:
+        """
+        Gracefully stop background components.
+        """
+
+        logger.info('Stopping Validation Service...')
         if self.consumer:
             await self.consumer.stop()
-
         if self.client:
             await self.client.stop()
-
         logger.info('Validation Service stopped')
 
     async def run(self) -> None:
+        """
+        Run application until cancellation.
+        """
+
         await self.start()
-        if self.consumer is None:
-            raise RuntimeError('Consumer not initialized')
+
         try:
-            logger.info('Validation Service started')
-            await self.consumer.run()
+            while True:
+                await asyncio.sleep(3600)
+
+        except asyncio.CancelledError:
+            logger.info('Validation Service cancelled')
+            raise
+
         finally:
             await self.stop()

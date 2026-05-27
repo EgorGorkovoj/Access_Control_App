@@ -5,11 +5,13 @@ from pydantic import BaseModel
 from app.application.dtos.resource_dto import CreateResourceDTO, ResourceDTO, UpdateResourceDTO
 
 
-class ResourceCreate(BaseModel):
+class ResourceBase(BaseModel):
     name: str
     type: str
     attributes: dict[str, Any]
 
+
+class ResourceCreate(ResourceBase):
     def to_dto(self) -> CreateResourceDTO:
         return CreateResourceDTO(name=self.name, type=self.type, attributes=self.attributes)
 
@@ -30,11 +32,8 @@ class ResourceUpdate(BaseModel):
         )
 
 
-class ResourceResponse(BaseModel):
+class ResourceResponse(ResourceBase):
     id: int
-    name: str
-    type: str
-    attributes: dict[str, Any]
 
     @classmethod
     def from_dto(cls, dto: ResourceDTO):

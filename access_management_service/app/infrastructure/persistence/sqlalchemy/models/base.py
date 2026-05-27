@@ -11,9 +11,10 @@ class PreBase(AsyncAttrs, DeclarativeBase):
 
 class Base(PreBase):
     """
-    Базовая модель проекта. Абстрактная модель.
+    Base abstract model for the project.
 
-    Задает наследникам имя таблицы в БД строчными буквами от названия модели.
+    Automatically assigns database table names to subclasses
+    using the lowercase model name.
     """
 
     __abstract__ = True

@@ -7,4 +7,7 @@ class GroupConflict:
     conflict_group_id: int
 
     def normalized(self) -> tuple[int, int]:
-        return tuple(sorted((self.group_id, self.conflict_group_id)))
+        return (
+            min(self.group_id, self.conflict_group_id),
+            max(self.group_id, self.conflict_group_id),
+        )

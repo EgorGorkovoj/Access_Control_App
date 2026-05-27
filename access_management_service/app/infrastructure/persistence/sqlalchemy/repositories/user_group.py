@@ -18,7 +18,6 @@ class SQLAlchemyUserGroupRepository(IUserGroupRepository):
         return UserGroup(user_id=orm.user_id, group_id=orm.group_id)
 
     def _to_orm_model(self, domain_model: UserGroup) -> UserGroupORM:
-        """Преобразует чистую доменную модель в SQLAlchemy ORM-модель."""
         return UserGroupORM(user_id=domain_model.user_id, group_id=domain_model.group_id)
 
     async def create(self, user_group: UserGroup) -> UserGroup:
@@ -30,7 +29,8 @@ class SQLAlchemyUserGroupRepository(IUserGroupRepository):
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при создании данных в ' f'{user_group_orm.__name__}: {error}!'  # type: ignore
+                'An error occurred while creating data in '
+                f'{user_group_orm.__class__.__name__}: {error}!'
             )
             raise
 
@@ -61,7 +61,10 @@ class SQLAlchemyUserGroupRepository(IUserGroupRepository):
             await self.db_session.commit()
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка при удалении данных из {user_group_orm.__name__}: {error}!')
+            logger.error(
+                'An error occurred while deleting data from '
+                f'{user_group_orm.__class__.__name__}: {error}!'
+            )
             raise
 
         return True
@@ -79,7 +82,6 @@ class SQLAlchemyUserGroupRepository(IUserGroupRepository):
         )
 
         result = await self.db_session.execute(stmt)
-
         orm = result.scalar_one_or_none()
 
         if orm is None:

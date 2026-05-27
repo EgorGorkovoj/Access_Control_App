@@ -5,7 +5,7 @@ class GroupConflictWithItselfError(AppException):
     status_code = 400
 
     def __init__(self, group_id: int):
-        super().__init__(f'Группа {group_id} не может конфликтовать сама с собой!')
+        super().__init__(f'Group {group_id} cannot conflict with itself.')
 
 
 class GroupConflictAlreadyExistsError(AppException):
@@ -13,7 +13,7 @@ class GroupConflictAlreadyExistsError(AppException):
 
     def __init__(self, group_id: int, conflicting_group_id: int):
         super().__init__(
-            f'Конфликт между группами {group_id} и {conflicting_group_id} уже существует!'
+            f'Conflict between groups {group_id} and {conflicting_group_id} already exists.'
         )
 
 
@@ -22,5 +22,5 @@ class GroupConflictNotFoundError(AppException):
 
     def __init__(self, group_id: int, conflicting_group_id: int):
         super().__init__(
-            f'Конфликтующих групп с ID {group_id} и {conflicting_group_id} не обнаружено!'
+            f'Conflict between groups {group_id} and {conflicting_group_id} not found.'
         )

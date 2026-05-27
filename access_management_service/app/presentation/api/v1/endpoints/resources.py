@@ -29,7 +29,6 @@ async def get_resources(
     offset: int = Query(0, ge=0),
     resource_service: ResourceService = Depends(get_resource_service),
 ) -> list[ResourceResponse]:
-    """Возвращает список всех ресурсов."""
     resources = await resource_service.get_all_resources(limit, offset)
     return [ResourceResponse.from_dto(resource) for resource in resources]
 
@@ -39,7 +38,6 @@ async def get_resource(
     resource_id: int,
     resource_service: ResourceService = Depends(get_resource_service),
 ) -> ResourceResponse:
-    """Возвращает один ресурс по id."""
     resource = await resource_service.get_resource(resource_id)
     return ResourceResponse.from_dto(resource)
 
@@ -62,7 +60,6 @@ async def update_resource(
     data_update_resource: ResourceUpdate,
     resource_service: ResourceService = Depends(get_resource_service),
 ) -> ResourceResponse:
-    """Обновляет ресурс."""
     update_dto_resource = data_update_resource.to_dto(resource_id)
     updating_resource = await resource_service.update_resource(update_dto_resource)
     return ResourceResponse.from_dto(updating_resource)
@@ -72,5 +69,4 @@ async def update_resource(
 async def delete_resource(
     resource_id: int, resource_service: ResourceService = Depends(get_resource_service)
 ) -> None:
-    """Удаляет ресур."""
     await resource_service.delete_resource(resource_id)

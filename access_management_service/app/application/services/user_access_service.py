@@ -13,9 +13,6 @@ class UserAccessService:
         self.access_repo = access_repo
 
     async def add_access_user(self, user_id: int, access_id: int) -> UserAccessDTO:
-        """
-        Выдать доступ пользователю.
-        """
         access = await self.access_repo.get_by_id(access_id=access_id)
         if access is None:
             raise AccessNotFoundError(access_id)
@@ -27,10 +24,6 @@ class UserAccessService:
         )
 
     async def remove_access_user(self, user_id: int, access_id: int) -> None:
-        """
-        Отозвать доступ у пользователя.
-        """
-
         deleted = await self.user_access_repo.remove_access(user_id=user_id, access_id=access_id)
 
         if not deleted:
@@ -38,7 +31,6 @@ class UserAccessService:
 
     async def get_user_accesses(self, user_id: int) -> list[int]:
         """
-        Получить direct-access пользователя.
+        Get a user's direct access permissions.
         """
-
         return await self.user_access_repo.get_all_user_accesses(user_id)

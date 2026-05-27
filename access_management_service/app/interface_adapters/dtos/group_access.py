@@ -4,7 +4,7 @@ from app.application.dtos.group_access_dto import GroupAccessDTO
 
 
 class GroupAccessIdsResponse(BaseModel):
-    """Список ID доступов пользователя для определенной группы."""
+    """List of access IDs for a user in a specific group."""
 
     access_ids: list[int]
 

@@ -45,15 +45,17 @@ class RightGroupService:
         )
 
     async def update_right_group(self, dto: UpdateRightGroupDTO) -> RightGroupDTO:
+        existing = await self.group_repo.get_by_id(group_id=dto.id)
+
+        if existing is None:
+            raise GroupNotExistsError(dto.id)
+
         domain_model = RightGroup(
             id=dto.id,
-            name=dto.name,
+            name=(dto.name if dto.name is not None else existing.name),
             description=dto.description,
         )
         updated = await self.group_repo.update(domain_model)
-
-        if updated is None:
-            raise GroupNotExistsError(dto.id)
 
         return RightGroupDTO(
             id=updated.id,

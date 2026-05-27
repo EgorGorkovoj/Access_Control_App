@@ -13,8 +13,6 @@ class Resource:
 
 @dataclass
 class ResourceCreate:
-    """Модель для создания ресурса (без id)"""
-
     name: str
     type: str
     attributes: dict[str, Any] = field(default_factory=dict)

@@ -15,17 +15,15 @@ class SQLAlchemyRightGroupRepository(IRightGroupRepository):
         self.db_session = db_session
 
     def _to_domain_model(self, orm_model: RightGroupORM) -> RightGroup:
-        """Преобразует SQLAlchemy ORM-модель в чистую доменную модель."""
         return RightGroup(id=orm_model.id, name=orm_model.name, description=orm_model.description)
 
     def _to_orm_model(self, domain_model: RightGroup) -> RightGroupORM:
-        """Преобразует чистую доменную модель в SQLAlchemy ORM-модель."""
         return RightGroupORM(
             id=domain_model.id, name=domain_model.name, description=domain_model.description
         )
 
     def _apply_limit_offset(self, query: Select, limit: int, offset: int) -> Select:
-        """Применяет пагинацию к SQL-запросу."""
+        """Applies pagination to an SQL query."""
         query_pagination = query.limit(limit).offset(offset)
         return query_pagination
 
@@ -57,21 +55,22 @@ class SQLAlchemyRightGroupRepository(IRightGroupRepository):
             self.db_session.add(db_right_group_orm)
             await self.db_session.commit()
             await self.db_session.refresh(db_right_group_orm)
-            logger.info('Группа прав успешно создана!')
+            logger.info('Permission group successfully created!')
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при создании данных в ' f'{RightGroup.__name__}: {error}!'  # type: ignore
+                'An error occurred while creating data in  '
+                f'{db_right_group_orm.__class__.__name__}: {error}!'
             )
             raise
 
         return self._to_domain_model(db_right_group_orm)
 
-    async def update(self, group: RightGroup) -> RightGroup | None:
+    async def update(self, group: RightGroup) -> RightGroup:
         orm_group = await self.db_session.get(RightGroupORM, group.id)
 
         if orm_group is None:
-            return None
+            raise RuntimeError(f'Resource {group.id} not found during update')
 
         orm_group.name = group.name
         orm_group.description = group.description
@@ -81,7 +80,8 @@ class SQLAlchemyRightGroupRepository(IRightGroupRepository):
             await self.db_session.refresh(orm_group)
         except SQLAlchemyError as error:
             logger.error(
-                'Произошла ошибка при обновлении данных в ' f'{RightGroup.__name__}: {error}!'  # type: ignore
+                'An error occurred while updating data in '
+                f'{orm_group.__class__.__name__}: {error}!'
             )
             raise
 
@@ -99,7 +99,7 @@ class SQLAlchemyRightGroupRepository(IRightGroupRepository):
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при удалении данных из ' f'{RightGroup.__name__}: {error}!'
+                'An error occurred while deleting data from ' f'{RightGroup.__name__}: {error}!'
             )
             raise
         return True

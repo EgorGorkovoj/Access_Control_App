@@ -15,8 +15,6 @@ class RequestStatus(StrEnum):
     REJECTED = 'rejected'
 
 
-# TODO: Обновить ERD
-# Основная таблица заявок
 class AccessRequestORM(Base):
     request_id: Mapped[str] = mapped_column(
         String(36), default=lambda: str(uuid.uuid4()), unique=True, nullable=False
@@ -29,13 +27,11 @@ class AccessRequestORM(Base):
         Enum(RequestStatus), default=RequestStatus.PENDING, nullable=False
     )
 
-    # история изменений статусов
     status_history: Mapped[list['AccessRequestStatusHistoryORM']] = relationship(
         back_populates='request', cascade='all, delete-orphan'
     )
 
 
-# Таблица истории статусов
 class AccessRequestStatusHistoryORM(PreBase):
     __tablename__ = 'access_request_status_history'
 

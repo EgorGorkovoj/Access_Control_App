@@ -41,10 +41,10 @@ class AccessResponse(BaseModel):
     description: str | None
     resource_id: int
     credentials: dict[str, Any]
-    is_active: bool = True
+    is_active: bool
 
     @classmethod
-    def from_dto(cls, dto: AccessDTO):
+    def from_dto(cls, dto: AccessDTO) -> 'AccessResponse':
         return cls(
             id=dto.id,
             name=dto.name,

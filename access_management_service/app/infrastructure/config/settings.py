@@ -30,7 +30,7 @@ class Config(BaseSettings):
 
 @lru_cache
 def get_settings() -> Config:
-    return Config()  # type: ignore
+    return Config()
 
 
 settings = get_settings()

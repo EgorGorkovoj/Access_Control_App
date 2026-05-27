@@ -10,7 +10,7 @@ setup_logging()
 
 app = FastAPI(
     title='Access Management Service',
-    description='Сервис с работой и управлением доступами к ресурсам',
+    description='Сервис для работы и управлением доступами к ресурсам',
     debug=settings.DEBUG,
 )
 

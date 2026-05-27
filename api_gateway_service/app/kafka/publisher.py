@@ -12,12 +12,5 @@ class KafkaEventPublisher(EventPublisher):
     async def publish(self, topic: str, message: dict) -> None:
         try:
             await self._producer.send(topic=topic, value=message)
-
         except Exception:
-            logger.exception(
-                'Kafka publish failed',
-                extra={
-                    'topic': topic,
-                    'message': message,
-                },
-            )
+            logger.exception('Kafka publish failed', extra={'topic': topic, 'message': message})

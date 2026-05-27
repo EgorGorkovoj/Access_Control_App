@@ -31,4 +31,8 @@ class AccessRequest:
     current_status: RequestStatus = RequestStatus.PENDING
     id: int | None = None
 
-    status_history: list[AccessRequestStatusHistory] | None = None
+
+@dataclass
+class AccessRequestWithHistory:
+    request: AccessRequest
+    status_history: list[AccessRequestStatusHistory]

@@ -29,7 +29,7 @@ class SQLAlchemyUserAccessRepository(IUserAccessRepository):
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при создании данных в '
+                'An error occurred while creating data in '
                 f'{user_access_orm.__class__.__name__}: {error}!'
             )
             raise
@@ -49,7 +49,8 @@ class SQLAlchemyUserAccessRepository(IUserAccessRepository):
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                f'Ошибка при удалении данных из {user_access_orm.__class__.__name__}: {error}!'
+                'An error occurred while deleting data from '
+                f' {user_access_orm.__class__.__name__}: {error}!'
             )
             raise
 

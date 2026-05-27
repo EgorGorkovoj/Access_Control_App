@@ -18,7 +18,6 @@ async def add_group_conflict(
     conflicting_group_id: int,
     group_conflict_service: GroupConflictService = Depends(get_group_conflict_service_impl),
 ) -> GroupConflictResponse:
-    """Добавляет конфликт между двумя группами."""
     dto = await group_conflict_service.add_group_conflict(group_id, conflicting_group_id)
     return GroupConflictResponse.from_dto(dto)
 
@@ -31,18 +30,7 @@ async def remove_group_conflict(
     conflicting_group_id: int,
     group_conflict_service: GroupConflictService = Depends(get_group_conflict_service_impl),
 ) -> None:
-    """Удаляет конфликт групп."""
     await group_conflict_service.remove_group_conflict(group_id, conflicting_group_id)
-
-
-# @router.get('/groups/{group_id}/conflicts', status_code=status.HTTP_200_OK)
-# async def get_group_conflicts(
-#     group_id: int,
-#     group_conflict_service: GroupConflictService = Depends(get_group_conflict_service_impl),
-# ) -> list[GroupConflictResponse]:
-#     """Возвращает список конфликтующих групп для определенной группы."""
-#     conflicts = await group_conflict_service.get_group_conflicts(group_id)
-#     return [GroupConflictResponse.from_dto(dto) for dto in conflicts]
 
 
 @router.get('/groups/{group_id}/conflicts', status_code=status.HTTP_200_OK)

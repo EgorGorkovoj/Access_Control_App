@@ -19,22 +19,17 @@ from app.presentation.dependencies import (
 router = APIRouter()
 
 
-@router.get(
-    '/users/{user_id}/permissions',
-    status_code=status.HTTP_200_OK,
-)
+@router.get('/users/{user_id}/permissions', status_code=status.HTTP_200_OK)
 async def get_all_user_permissions(
     user_id: int,
     service: UserPermissionQueryService = Depends(get_user_permissions_query_service),
 ) -> UserAccessPermissionsResponse:
     """
-    Возвращает все effective-access пользователя.
+    Returns all effective access permissions for a user.
     """
-
     permissions = await service.get_all_user_permissions(
         user_id=user_id,
     )
-
     return UserAccessPermissionsResponse.from_dto(permissions)
 
 
@@ -50,14 +45,10 @@ async def get_user_permissions(
         target_type=request.target_type,
         target_id=request.target_id,
     )
-
     return UserPermissionsResponse.from_dto(dto=dto)
 
 
-@router.post(
-    '/internal/permissions/grant',
-    status_code=status.HTTP_201_CREATED,
-)
+@router.post('/internal/permissions/grant', status_code=status.HTTP_201_CREATED)
 async def grant_permissions_to_user(
     request: GrantPermissionsRequest,
     service: PermissionManagementService = Depends(get_permissions_management_service),
@@ -69,10 +60,7 @@ async def grant_permissions_to_user(
     )
 
 
-@router.delete(
-    '/users/{user_id}/permissions',
-    status_code=status.HTTP_204_NO_CONTENT,
-)
+@router.delete('/users/{user_id}/permissions', status_code=status.HTTP_204_NO_CONTENT)
 async def revoke_user_permission(
     user_id: int,
     data: RevokeUserPermissionRequest,

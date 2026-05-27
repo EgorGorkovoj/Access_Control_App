@@ -41,7 +41,7 @@ class PermissionManagementService:
         target_id: int,
     ) -> None:
         """
-        Выдача группы прав или отдельного доступа.
+        Granting a permission group or a single access right.
         """
 
         if target_type == TargetType.GROUP:
@@ -57,7 +57,7 @@ class PermissionManagementService:
         target_id: int,
     ) -> None:
         """
-        Отозвать группу прав или отдельный доступ.
+        Revoke a permission group or a single access right.
         """
 
         if target_type == TargetType.GROUP:

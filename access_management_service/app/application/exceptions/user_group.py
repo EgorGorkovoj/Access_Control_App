@@ -5,11 +5,11 @@ class UserGroupAlreadyExistsError(AppException):
     status_code = 409
 
     def __init__(self, user_id: int, group_id: int):
-        super().__init__(f'Пользователь с id:{user_id} уже имеет группу c id:{group_id}!')
+        super().__init__(f'User with id={user_id} already belongs to group with id={group_id}.')
 
 
 class UserGroupNotFoundError(AppException):
     status_code = 404
 
     def __init__(self, user_id: int, group_id: int):
-        super().__init__(f'Пользователя с id:{user_id} и группой с id:{group_id} не существует!')
+        super().__init__(f'User with id={user_id} does not belong to group with id={group_id}.')

@@ -10,9 +10,6 @@ class ResourceAccessService:
         self.access_repo = access_repo
 
     async def get_accesses_by_resource(self, resource_id: int) -> ResourceAccessesDTO:
-        """
-        Возвращает все доступы для ресурса в виде DTO.
-        """
         resource = await self.resource_repo.get_by_id(resource_id)
         if resource is None:
             raise ResourceNotExistsError(resource_id=resource_id)

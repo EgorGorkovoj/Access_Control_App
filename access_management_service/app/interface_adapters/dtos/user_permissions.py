@@ -3,13 +3,6 @@ from pydantic import BaseModel, ConfigDict
 from app.application.dtos.user_permissions_dto import UserPermissionQueryDTO, UserPermissionsDTO
 from app.domain.models.access_request import TargetType
 
-# @dataclass(frozen=True)
-# class UserPermissionsDTO:
-#     user_id: int
-#     user_groups: list[int]
-#     conflicting_groups: list[int] | None = None
-#     conflicting_accesses: list[int] | None = None
-
 
 class UserPermissionsRequest(BaseModel):
     user_id: int
@@ -43,13 +36,3 @@ class UserAccessPermissionsResponse(BaseModel):
         return cls(
             access_ids=dto.access_ids,
         )
-
-    # @classmethod
-    # def from_dto(cls, dto: UserPermissionsDTO) -> 'UserPermissionsResponse':
-    #     return cls(
-    #         user_id=dto.user_id,
-    #         user_accesses=dto.user_accesses,
-    #         user_groups=dto.user_groups,
-    #         accesses_destination_group=dto.accesses_destination_group,
-    #         conflicting_groups=dto.conflicting_groups
-    #     )

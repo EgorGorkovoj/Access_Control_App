@@ -11,7 +11,6 @@ router = APIRouter()
 async def add_access_to_group(
     group_id: int, access_id: int, service: GroupAccessService = Depends(get_group_access_service)
 ) -> GroupAccessResponse:
-    """Назначает access группе."""
     group_access_dto = await service.add_access_to_group(group_id, access_id)
     return GroupAccessResponse.from_dto(group_access_dto)
 
@@ -20,7 +19,6 @@ async def add_access_to_group(
 async def remove_permission_from_group(
     group_id: int, access_id: int, service: GroupAccessService = Depends(get_group_access_service)
 ) -> None:
-    """Удаляет access у группы."""
     await service.remove_access_from_group(group_id, access_id)
 
 
@@ -28,6 +26,5 @@ async def remove_permission_from_group(
 async def get_group_accesses(
     group_id: int, service: GroupAccessService = Depends(get_group_access_service)
 ) -> GroupAccessIdsResponse:
-    """Возвращает список accesses группы."""
     group_accesses = await service.get_group_accesses(group_id)
     return GroupAccessIdsResponse(access_ids=group_accesses)

@@ -3,10 +3,12 @@ from pydantic import BaseModel
 from app.application.dtos.group_dto import CreateRightGroupDTO, RightGroupDTO, UpdateRightGroupDTO
 
 
-class RightGroupCreate(BaseModel):
+class RightGroupBase(BaseModel):
     name: str
     description: str | None = None
 
+
+class RightGroupCreate(RightGroupBase):
     def to_dto(self) -> CreateRightGroupDTO:
         return CreateRightGroupDTO(name=self.name, description=self.description)
 
@@ -23,10 +25,8 @@ class RightGroupUpdate(BaseModel):
         )
 
 
-class RightGroupResponse(BaseModel):
+class RightGroupResponse(RightGroupBase):
     id: int
-    name: str
-    description: str | None = None
 
     @classmethod
     def from_dto(cls, dto: RightGroupDTO) -> 'RightGroupResponse':

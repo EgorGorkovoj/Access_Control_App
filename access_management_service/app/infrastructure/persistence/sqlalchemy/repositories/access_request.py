@@ -1,4 +1,4 @@
-from sqlalchemy import select
+from sqlalchemy import Select, select
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -6,6 +6,7 @@ from sqlalchemy.orm import selectinload
 from app.domain.models.access_request import (
     AccessRequest,
     AccessRequestStatusHistory,
+    AccessRequestWithHistory,
     RequestStatus,
 )
 from app.domain.repositories.access_request_repository import IAccessRequestRepository
@@ -32,7 +33,7 @@ class SQLAlchemyAccessRequestRepository(IAccessRequestRepository):
             current_status=orm.current_status,
         )
 
-    def _to_domain_with_history(self, orm: AccessRequestORM) -> AccessRequest:
+    def _to_domain_with_history(self, orm: AccessRequestORM) -> AccessRequestWithHistory:
         base = self._to_domain_model(orm)
 
         history = [
@@ -44,8 +45,10 @@ class SQLAlchemyAccessRequestRepository(IAccessRequestRepository):
             for stat in orm.status_history
         ]
 
-        base.status_history = history
-        return base
+        return AccessRequestWithHistory(
+            request=base,
+            status_history=history,
+        )
 
     def _to_orm_model(self, domain: AccessRequest) -> AccessRequestORM:
         return AccessRequestORM(
@@ -56,6 +59,11 @@ class SQLAlchemyAccessRequestRepository(IAccessRequestRepository):
             group_id=domain.group_id,
             current_status=domain.current_status,
         )
+
+    def _apply_limit_offset(self, query: Select, limit: int, offset: int) -> Select:
+        """Applies pagination to an SQL query."""
+        query_pagination = query.limit(limit).offset(offset)
+        return query_pagination
 
     async def create(self, access_request: AccessRequest) -> AccessRequest:
         orm = self._to_orm_model(access_request)
@@ -73,11 +81,18 @@ class SQLAlchemyAccessRequestRepository(IAccessRequestRepository):
             await self.db_session.refresh(orm)
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка создания {orm.__class__.__name__}: {error}')
+            logger.error(f'Error creating {orm.__class__.__name__}: {error}')
             raise
         return self._to_domain_model(orm)
 
-    async def get_with_history(self, request_id: str) -> AccessRequest | None:
+    async def get_all_request_id(self, limit: int | None, offset: int) -> list[str]:
+        stmt = select(AccessRequestORM.request_id)
+        if limit:
+            stmt = self._apply_limit_offset(stmt, limit, offset)
+        result = await self.db_session.execute(stmt)
+        return result.scalars().all()
+
+    async def get_with_history(self, request_id: str) -> AccessRequestWithHistory | None:
         stmt = (
             select(AccessRequestORM)
             .where(AccessRequestORM.request_id == request_id)
@@ -126,5 +141,5 @@ class SQLAlchemyAccessRequestRepository(IAccessRequestRepository):
             await self.db_session.commit()
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка обновления статуса в {orm.__class__.__name__}: {error}')
+            logger.error(f'Error updating status in {orm.__class__.__name__}: {error}')
             raise

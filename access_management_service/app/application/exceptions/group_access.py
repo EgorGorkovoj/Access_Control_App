@@ -6,7 +6,7 @@ class GroupAccessAlreadyExistsError(AppException):
 
     def __init__(self, group_id: int, access_id: int):
         super().__init__(
-            f'Группа доступов с group_id:{group_id}" и access_id:{access_id} уже существует!'
+            f'Group access with group_id={group_id} and access_id={access_id} already exists.'
         )
 
 
@@ -15,5 +15,5 @@ class GroupAccessNotFoundError(AppException):
 
     def __init__(self, group_id: int, access_id: int):
         super().__init__(
-            f'Группы доступов с group_id:{group_id} и access_id:{access_id} не существует!'
+            f'Group access with group_id={group_id} and access_id={access_id} not found.'
         )

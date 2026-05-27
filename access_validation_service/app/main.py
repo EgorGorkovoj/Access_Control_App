@@ -1,19 +1,13 @@
 import asyncio
 
 from app.infrastructure.bootstrap.validation_application import ValidationApplication
+from app.infrastructure.logging.config import setup_logging
 
-# from app.infrastructure.http.management_client import AccessManagementClient
-# from app.infrastructure.kafka.consumer import KafkaConsumerClient
-from app.infrastructure.logging.logger import get_logger
-
-# from app.infrastructure.config.settings import settings
-
-logger = get_logger(f'{__name__}: kafka-test')
+setup_logging()
 
 
 async def main():
     app = ValidationApplication()
-
     await app.run()
 
 

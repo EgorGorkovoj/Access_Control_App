@@ -27,7 +27,6 @@ async def get_right_groups(
     offset: int = Query(0, ge=0),
     right_group_service: RightGroupService = Depends(get_right_group_service),
 ) -> list[RightGroupResponse]:
-    """Возвращает список всех групп прав."""
     groups = await right_group_service.get_right_groups(limit=limit, offset=offset)
     return [RightGroupResponse.from_dto(group) for group in groups]
 
@@ -36,7 +35,6 @@ async def get_right_groups(
 async def get_right_group(
     group_id: int, right_group_service: RightGroupService = Depends(get_right_group_service)
 ):
-    """Возвращает одну группу прав по id."""
     group = await right_group_service.get_right_group(group_id=group_id)
     return RightGroupResponse.from_dto(group)
 
@@ -47,7 +45,6 @@ async def update_right_group(
     data_update_group: RightGroupUpdate,
     right_group_service: RightGroupService = Depends(get_right_group_service),
 ) -> RightGroupResponse:
-    """Обновляет имя или описание группы."""
     update_dto_group = data_update_group.to_dto(group_id)
     updating_group = await right_group_service.update_right_group(update_dto_group)
     return RightGroupResponse.from_dto(updating_group)
@@ -57,5 +54,4 @@ async def update_right_group(
 async def delete_right_group(
     group_id: int, right_group_service: RightGroupService = Depends(get_right_group_service)
 ) -> None:
-    """Удаляет группу прав."""
     await right_group_service.delete_right_group(group_id)

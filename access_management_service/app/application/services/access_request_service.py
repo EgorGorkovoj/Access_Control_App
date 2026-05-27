@@ -65,6 +65,10 @@ class AccessRequestService:
             current_status=created.current_status,
         )
 
+    async def get_all_request_id(self, limit: int | None, offset: int) -> list[str]:
+        request_ids = await self.access_request_repo.get_all_request_id(limit=limit, offset=offset)
+        return request_ids
+
     async def get_request(self, request_id: str) -> AccessRequestDTO:
         request = await self.access_request_repo.get_by_request_id(request_id)
 
@@ -80,10 +84,13 @@ class AccessRequestService:
         )
 
     async def get_request_with_history(self, request_id: str) -> AccessRequestWithHistoryDTO:
-        request = await self.access_request_repo.get_with_history(request_id)
+        result = await self.access_request_repo.get_with_history(request_id)
 
-        if request is None:
+        if result is None:
             raise RequestNotFoundError(request_id)
+
+        request = result.request
+        status_history = result.status_history
 
         return AccessRequestWithHistoryDTO(
             request_id=request.request_id,
@@ -93,11 +100,11 @@ class AccessRequestService:
             current_status=request.current_status,
             status_history=[
                 AccessRequestStatusHistoryDTO(
-                    status=h.status,
-                    changed_at=h.changed_at,
-                    changed_by=h.changed_by,
+                    status=history.status,
+                    changed_at=history.changed_at,
+                    changed_by=history.changed_by,
                 )
-                for h in request.status_history  # type:ignore
+                for history in status_history
             ],
         )
 

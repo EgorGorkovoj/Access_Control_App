@@ -4,8 +4,6 @@ from app.application.dtos.user_group_dto import UserGroupDTO
 
 
 class UserGroupIdsResponse(BaseModel):
-    """Список ID групп пользователя"""
-
     group_ids: list[int]
 
     model_config = ConfigDict(from_attributes=True)

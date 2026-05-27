@@ -43,7 +43,7 @@ class SQLAlchemyAccessRepository(IAccessRepository):
         )
 
     def _apply_limit_offset(self, query: Select, limit: int, offset: int) -> Select:
-        """Применяет пагинацию к SQL-запросу."""
+        """Applies pagination to an SQL query."""
         query_pagination = query.limit(limit).offset(offset)
         return query_pagination
 
@@ -56,7 +56,7 @@ class SQLAlchemyAccessRepository(IAccessRepository):
             await self.db_session.refresh(orm)
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка создания {orm.__class__.__name__}: {error}')
+            logger.error(f'Error creating {orm.__class__.__name__}: {error}')
             raise
 
         return self._to_domain_model(orm)
@@ -105,7 +105,7 @@ class SQLAlchemyAccessRepository(IAccessRepository):
         except SQLAlchemyError as error:
             await self.db_session.rollback()
             logger.error(
-                'Произошла ошибка при удалении данных из '
+                'An error occurred while deleting data from '
                 f'{orm_access.__class__.__name__}: {error}!'
             )
             raise

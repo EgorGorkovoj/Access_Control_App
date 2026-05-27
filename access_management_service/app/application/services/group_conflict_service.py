@@ -18,30 +18,11 @@ class GroupConflictService:
         self.group_repo = group_repo
 
     async def get_conflicting_group_ids(self, group_id: int) -> list[int]:
-        """
-        Возвращает список ID групп, конфликтующих с переданной группой.
-        """
         existing_group = await self.group_repo.get_by_id(group_id)
         if not existing_group:
             raise GroupNotExistsError(group_id)
 
         return await self.conflict_repo.get_conflicting_group_ids(group_id)
-
-    # async def get_group_conflicts(self, group_id: int) -> list[GroupConflictDTO]:
-    #     existing_group = await self.group_repo.get_by_id(group_id)
-    #     if not existing_group:
-    #         raise GroupNotExistsError(group_id)
-
-    #     result = []
-    #     conflicts = await self.conflict_repo.get_by_group_id(group_id)
-    #     for conflict in conflicts:
-    #         if conflict.group_id == group_id:
-    #             other_id = conflict.conflict_group_id
-    #         else:
-    #             other_id = conflict.group_id
-
-    #         result.append(GroupConflictDTO(group_id=group_id, conflict_group_id=other_id))
-    #     return result
 
     async def add_group_conflict(
         self, group_id: int, conflicting_group_id: int

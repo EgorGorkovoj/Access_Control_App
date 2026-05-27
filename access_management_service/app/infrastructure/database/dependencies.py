@@ -50,7 +50,7 @@ from app.infrastructure.persistence.sqlalchemy.repositories.user_group import (
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, Any]:
-    """Асинхронная зависимость FastAPI для получения сессии SQLAlchemy."""
+    """FastAPI async dependency that provides a SQLAlchemy session."""
     async with AsyncSessionLocal() as async_session:
         yield async_session
 
@@ -58,21 +58,21 @@ async def get_async_session() -> AsyncGenerator[AsyncSession, Any]:
 def get_right_group_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IRightGroupRepository:
-    """Зависимость для предоставления конкретной реализации IRightGroupRepository"""
+    """Dependency that provides a concrete implementation of IRightGroupRepository."""
     return SQLAlchemyRightGroupRepository(db_session)
 
 
 def get_right_group_service_impl(
     group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
 ) -> RightGroupService:
-    """Зависимость для предоставления RightGroupService"""
+    """Dependency that provides RightGroupService."""
     return RightGroupService(group_repo=group_repo)
 
 
 def get_right_group_conflict_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IGroupConflictRepository:
-    """Зависимость для предоставления конкретной реализации IGroupConflictRepository"""
+    """Dependency that provides a concrete implementation of IGroupConflictRepository"""
     return SQLAlchemyGroupConflictRepository(db_session)
 
 
@@ -82,28 +82,28 @@ def get_group_conflict_service_impl(
     ),
     group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
 ) -> GroupConflictService:
-    """Зависимость для предоставления GroupConflictService"""
+    """Dependency that provides GroupConflictService"""
     return GroupConflictService(conflict_repo=group_conflict_repo, group_repo=group_repo)
 
 
 def get_resource_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IResourceRepository:
-    """Зависимость для предоставления конкретной реализации IResourceRepository"""
+    """Dependency that provides a concrete implementation of IResourceRepository"""
     return SQLAlchemyResourceRepository(db_session)
 
 
 def get_resource_service_impl(
     resource_repo: IResourceRepository = Depends(get_resource_repository_impl),
 ) -> ResourceService:
-    """Зависимость для предоставления ResourceService"""
+    """Dependency that provides ResourceService"""
     return ResourceService(resource_repo=resource_repo)
 
 
 def get_access_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IAccessRepository:
-    """Зависимость для предоставления конкретной реализации IAccessRepository"""
+    """Dependency that provides a concrete implementation of IAccessRepository"""
     return SQLAlchemyAccessRepository(db_session)
 
 
@@ -111,14 +111,14 @@ def get_access_service_impl(
     access_repo: IAccessRepository = Depends(get_access_repository_impl),
     resource_repo: IResourceRepository = Depends(get_resource_repository_impl),
 ) -> AccessService:
-    """Зависимость для предоставления AccessService."""
+    """Dependency that provides AccessService."""
     return AccessService(access_repo=access_repo, resource_repo=resource_repo)
 
 
 def get_group_access_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IGroupAccessRepository:
-    """Зависимость для предоставления конкретной реализации IGroupAccessRepository."""
+    """Dependency that provides a concrete implementation of IGroupAccessRepository."""
     return SQLAlchemyGroupAccessRepository(db_session)
 
 
@@ -127,7 +127,7 @@ def get_group_access_service_impl(
     group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
     access_repo: IAccessRepository = Depends(get_access_repository_impl),
 ) -> GroupAccessService:
-    """Зависимость для предоставления GroupAccessService."""
+    """Dependency that provides GroupAccessService."""
     return GroupAccessService(
         group_access_repo=group_access_repo, group_repo=group_repo, access_repo=access_repo
     )
@@ -136,7 +136,7 @@ def get_group_access_service_impl(
 def get_user_group_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IUserGroupRepository:
-    """Зависимость для предоставления конкретной реализации IUserGroupRepository."""
+    """Dependency that provides a concrete implementation of IUserGroupRepository."""
     return SQLAlchemyUserGroupRepository(db_session)
 
 
@@ -144,14 +144,14 @@ def get_user_group_service_impl(
     user_group_repo: IUserGroupRepository = Depends(get_user_group_repository_impl),
     group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
 ) -> UserGroupService:
-    """Зависимость для предоставления UserGroupService."""
+    """Dependency that provides UserGroupService."""
     return UserGroupService(user_group_repo=user_group_repo, group_repo=group_repo)
 
 
 def get_access_request_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IAccessRequestRepository:
-    """Зависимость для предоставления конкретной реализации IAccessRequestRepository."""
+    """Dependency that provides a concrete implementation of IAccessRequestRepository."""
     return SQLAlchemyAccessRequestRepository(db_session)
 
 
@@ -160,7 +160,7 @@ def get_access_request_service_impl(
     group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
     access_repo: IAccessRepository = Depends(get_access_repository_impl),
 ) -> AccessRequestService:
-    """Зависимость для предоставления AccessRequestService."""
+    """Dependency that provides AccessRequestService."""
     return AccessRequestService(
         access_request_repo=access_request_repo, group_repo=group_repo, access_repo=access_repo
     )
@@ -169,28 +169,17 @@ def get_access_request_service_impl(
 def get_user_access_repository_impl(
     db_session: AsyncSession = Depends(get_async_session),
 ) -> IUserAccessRepository:
-    """Зависимость для предоставления конкретной реализации IUserAccessRepository."""
+    """Dependency that provides a concrete implementation of IUserAccessRepository."""
     return SQLAlchemyUserAccessRepository(db_session)
 
 
-# def get_user_permissions_service_impl(
-#     user_group_repo: IUserGroupRepository = Depends(get_user_group_repository_impl),
-#     user_access_repo: IUserAccessRepository = Depends(get_user_access_repository_impl),
-#     group_access_repo: IGroupAccessRepository = Depends(get_group_access_repository_impl),
-#     group_conflict_repo: IGroupConflictRepository = Depends(get_group_conflict_service_impl)
-# ):
-#     return UserPermissionsService(
-#         user_group_repo=user_group_repo,
-#         user_access_repo=user_access_repo,
-#         group_access_repo=group_access_repo,
-#         group_conflict_repo=group_conflict_repo
-#     )
 def get_user_permissions_service_impl(
     user_group_repo: IUserGroupRepository = Depends(get_user_group_repository_impl),
     group_conflict_repo: IGroupConflictRepository = Depends(
         get_right_group_conflict_repository_impl
     ),
 ) -> UserPermissionsService:
+    """Dependency that provides UserPermissionsService."""
     return UserPermissionsService(
         user_group_repo=user_group_repo,
         group_conflict_repo=group_conflict_repo,
@@ -203,6 +192,7 @@ def get_permissions_management_service_impl(
     group_repo: IRightGroupRepository = Depends(get_right_group_repository_impl),
     access_repo: IAccessRepository = Depends(get_access_repository_impl),
 ) -> PermissionManagementService:
+    """Dependency that provides PermissionManagementService."""
     return PermissionManagementService(
         user_group_repo=user_group_repo,
         user_access_repo=user_access_repo,
@@ -216,6 +206,7 @@ def get_user_permissions_query_service_impl(
     group_access_repo: IGroupAccessRepository = Depends(get_group_access_repository_impl),
     user_access_repo: IUserAccessRepository = Depends(get_user_access_repository_impl),
 ) -> UserPermissionQueryService:
+    """Dependency that provides UserPermissionQueryService."""
     return UserPermissionQueryService(
         user_group_repo=user_group_repo,
         group_access_repo=group_access_repo,
@@ -227,4 +218,5 @@ def get_resource_access_service_impl(
     resource_repo: IResourceRepository = Depends(get_resource_repository_impl),
     access_repo: IAccessRepository = Depends(get_access_repository_impl),
 ) -> ResourceAccessService:
+    """Dependency that provides ResourceAccessService."""
     return ResourceAccessService(resource_repo=resource_repo, access_repo=access_repo)

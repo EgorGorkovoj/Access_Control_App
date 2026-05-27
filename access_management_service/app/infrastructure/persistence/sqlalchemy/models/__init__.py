@@ -1,5 +1,5 @@
 from .access import AccessORM
-from .access_request import AccessRequestORM
+from .access_request import AccessRequestORM, AccessRequestStatusHistoryORM
 from .base import Base
 from .group_access import GroupAccessORM
 from .group_conflict import GroupConflictORM
@@ -13,6 +13,7 @@ __all__ = [
     'RightGroupORM',
     'AccessORM',
     'AccessRequestORM',
+    'AccessRequestStatusHistoryORM',
     'ResourceORM',
     'GroupAccessORM',
     'GroupConflictORM',

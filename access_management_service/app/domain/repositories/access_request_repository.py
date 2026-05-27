@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from app.domain.models.access_request import AccessRequest, RequestStatus
+from app.domain.models.access_request import AccessRequest, AccessRequestWithHistory, RequestStatus
 
 
 class IAccessRequestRepository(ABC):
@@ -9,11 +9,15 @@ class IAccessRequestRepository(ABC):
         pass
 
     @abstractmethod
+    async def get_all_request_id(self, limit: int | None, offset: int) -> list[str]:
+        pass
+
+    @abstractmethod
     async def get_by_request_id(self, request_id: str) -> AccessRequest | None:
         pass
 
     @abstractmethod
-    async def get_with_history(self, request_id: str) -> AccessRequest | None:
+    async def get_with_history(self, request_id: str) -> AccessRequestWithHistory | None:
         pass
 
     @abstractmethod

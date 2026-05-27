@@ -16,32 +16,16 @@ class SQLAlchemyGroupConflictRepository(IGroupConflictRepository):
         self.db_session = db_session
 
     def _to_domain_model(self, orm_model: GroupConflictORM) -> GroupConflict:
-        """Преобразует SQLAlchemy ORM-модель в чистую доменную модель."""
         return GroupConflict(
             group_id=orm_model.group_low_id, conflict_group_id=orm_model.group_high_id
         )
 
     def _to_orm_model(self, domain_model: GroupConflict) -> GroupConflictORM:
-        """Преобразует чистую доменную модель в SQLAlchemy ORM-модель."""
         low_id, high_id = domain_model.normalized()
         return GroupConflictORM(group_low_id=low_id, group_high_id=high_id)
 
-    # async def get_by_group_id(self, group_conflict_id: int) -> list[GroupConflict]:
-    #     result = await self.db_session.execute(
-    #         select(GroupConflictORM).where(
-    #             or_(
-    #                 GroupConflictORM.group_low_id == group_conflict_id,
-    #                 GroupConflictORM.group_high_id == group_conflict_id,
-    #             )
-    #         )
-    #     )
-
-    #     orm_conflicts = result.scalars().all()
-
-    #     return [self._to_domain_model(conflict) for conflict in orm_conflicts]
-
     async def get_conflicting_group_ids(self, group_id: int) -> list[int]:
-        """Возвращает список ID групп, которые конфликтуют с данной"""
+        """Returns a list of group IDs that conflict with the current one."""
         result = await self.db_session.execute(
             select(
                 case(
@@ -98,14 +82,14 @@ class SQLAlchemyGroupConflictRepository(IGroupConflictRepository):
         try:
             self.db_session.add(group_conflict_orm)
             await self.db_session.commit()
-            logger.info('Конфликтующие группы успешно созданы!')
+            logger.info('Conflicting groups successfully created!')
         except IntegrityError:
             await self.db_session.rollback()
-            logger.warning('Конфликт уже существует')
+            logger.warning('Conflict already exists!')
             raise
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error('Ошибка при создании конфликтующих групп: ' f'{error}')
+            logger.error(f'Error creating conflicting groups: {error}')
             raise
 
         return self._to_domain_model(group_conflict_orm)
@@ -125,7 +109,7 @@ class SQLAlchemyGroupConflictRepository(IGroupConflictRepository):
             await self.db_session.commit()
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error('Ошибка при удалении конфликта групп: ' f'{error}')
+            logger.error(f'Error deleting group conflict: {error}')
             raise
 
         return True

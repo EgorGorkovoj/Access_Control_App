@@ -29,7 +29,7 @@ class SQLAlchemyGroupAccessRepository(IGroupAccessRepository):
             await self.db_session.refresh(orm_group_access)
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка создания данных в {orm_group_access.__name__}: {error}!')
+            logger.error(f'Error creating data in {orm_group_access.__name__}: {error}!')
             raise
 
         return self._to_domain(orm_group_access)
@@ -59,7 +59,7 @@ class SQLAlchemyGroupAccessRepository(IGroupAccessRepository):
             await self.db_session.commit()
         except SQLAlchemyError as error:
             await self.db_session.rollback()
-            logger.error(f'Ошибка при удалении данных из {group_access_orm.__name__}: {error}!')
+            logger.error(f'Error deleting data from {group_access_orm.__name__}: {error}!')
             raise
 
         return True

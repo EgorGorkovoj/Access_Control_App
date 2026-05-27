@@ -4,8 +4,6 @@ from app.application.dtos.group_conflict_dto import GroupConflictDTO
 
 
 class GroupConflictsIDSResponse(BaseModel):
-    """Ответ с ID конфликтующих групп"""
-
     group_id: int
     conflicting_group_ids: list[int]
 

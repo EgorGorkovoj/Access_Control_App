@@ -41,7 +41,7 @@ class GroupAccessService:
 
         return GroupAccessDTO(group_id=created.group_id, access_id=created.access_id)
 
-    async def remove_access_from_group(self, group_id: int, access_id: int):
+    async def remove_access_from_group(self, group_id: int, access_id: int) -> None:
         deleted = await self.group_access_repo.delete(group_id, access_id)
 
         if not deleted:

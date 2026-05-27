@@ -9,7 +9,7 @@ logger = get_logger(__name__)
 
 
 class LoggingMiddleware(BaseHTTPMiddleware):
-    """Middleware для логирования всех HTTP-запросов"""
+    """Middleware for logging all HTTP requests."""
 
     async def dispatch(self, request: Request, call_next):
         start_time = time.time()
