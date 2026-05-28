@@ -1,0 +1,6 @@
+name,type,host,port,env
+db-prod-main,postgres,db.prod.local,5432,prod
+db-dev-main,postgres,db.dev.local,5432,dev
+redis-main,redis,redis.local,6379,prod
+kafka-main,kafka,kafka.local,9092,prod
+analytics-db,clickhouse,ch.local,8123,prod

@@ -19,6 +19,8 @@ class AccessORM(Base):
     is_active: Mapped[bool] = mapped_column(default=True)
 
     resource: Mapped['ResourceORM'] = relationship(back_populates='accesses')
-    groups: Mapped[list['GroupAccessORM']] = relationship(back_populates='access')
+    groups: Mapped[list['GroupAccessORM']] = relationship(
+        back_populates='access', cascade='all, delete-orphan', passive_deletes=True
+    )
 
     __table_args__ = (UniqueConstraint('name', 'resource_id', name='uq_access_name_resource'),)

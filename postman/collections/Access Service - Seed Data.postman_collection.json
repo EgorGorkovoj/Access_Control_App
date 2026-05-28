@@ -1,0 +1,191 @@
+{
+  "info": {
+    "_postman_id": "a73ef0bb-a949-4e41-9f91-91364ac7d336",
+    "name": "Access Service - Seed Data",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36489213",
+    "_collection_link": "https://go.postman.co/collection/36489213-a73ef0bb-a949-4e41-9f91-91364ac7d336?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Resources",
+      "item": [
+        {
+          "name": "Create Resource Seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{{$randomCompanyName}}\",\r\n  \"type\": \"postgres\",\r\n  \"attributes\": {\r\n    \"host\": \"{{$randomDomainName}}\",\r\n    \"port\": 5432,\r\n    \"env\": \"prod\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Accesses",
+      "item": [
+        {
+          "name": "create access seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"access-{{$randomUUID}}\",\r\n  \"description\": \"{{$randomPhrase}}\",\r\n  \"resource_id\": {{resource_id}},\r\n  \"credentials\": {\r\n    \"host\": \"{{$randomDomainName}}\",\r\n    \"username\": \"{{$randomUserName}}\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/accesses",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accesses"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Groups",
+      "item": [
+        {
+          "name": "create group seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"{{$randomCompanyName}}\",\r\n  \"description\": \"{{$randomPhrase}}\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-group",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-group"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Group Accesses",
+      "item": [
+        {
+          "name": "add group access seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/accesses/{{access_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "accesses",
+                "{{access_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Conflicts",
+      "item": [
+        {
+          "name": "add conflict seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/conflicts/{{conflicting_group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "conflicts",
+                "{{conflicting_group_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Group",
+      "item": [
+        {
+          "name": "Add user group seed",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/users/{{user_id}}/groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}",
+                "groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
