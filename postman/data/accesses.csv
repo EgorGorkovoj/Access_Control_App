@@ -1,6 +1,0 @@
-name,description,resource_id,host,username
-Full DB Access,Full access to prod DB,1,db.prod.local,admin_user
-Read Only Access,Read only access,1,db.prod.local,readonly_user
-Dev Access,Development DB access,2,db.dev.local,dev_user
-Redis Access,Redis cache access,3,redis.local,cache_user
-Kafka Access,Kafka consumer access,4,kafka.local,kafka_user

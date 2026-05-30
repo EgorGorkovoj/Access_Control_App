@@ -1,0 +1,911 @@
+{
+  "info": {
+    "_postman_id": "2fd1f8f8-6a88-4e07-85f1-085cf3506d54",
+    "name": "Access Service (Gateway)",
+    "description": "API tests for Access Management via API Gateway",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "36489213",
+    "_collection_link": "https://go.postman.co/collection/36489213-2fd1f8f8-6a88-4e07-85f1-085cf3506d54?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Resources",
+      "item": [
+        {
+          "name": "Create Resource",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"db-prod-main\",\r\n  \"type\": \"postgres\",\r\n  \"attributes\": {\r\n    \"host\": \"db.prod.local\",\r\n    \"port\": 5432,\r\n    \"database\": \"main\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all resources",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"db-prod-main\",\r\n  \"type\": \"postgres\",\r\n  \"attributes\": {\r\n    \"host\": \"db.prod.local\",\r\n    \"port\": 5432,\r\n    \"database\": \"main\"\r\n  }\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources?offset=0",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources"
+              ],
+              "query": [
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all resources with limit and offset",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources?limit=1&offset=1",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1"
+                },
+                {
+                  "key": "offset",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get resource by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources/{{resource_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources",
+                "{{resource_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update resource",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"db-prod-main\",\r\n  \"type\": \"postgres\",\r\n  \"attributes\": {\r\n    \"host\": \"db.prod.local\",\r\n    \"port\": 5432,\r\n    \"database\": \"main\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources/{{resource_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources",
+                "{{resource_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete resource",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/resources/{{resource_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "resources",
+                "{{resource_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Accesses",
+      "item": [
+        {
+          "name": "Create access",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Full DB Access\",\r\n  \"description\": \"Full access to production DB\",\r\n  \"resource_id\": {{resource_id}},\r\n  \"credentials\": {\r\n    \"host\": \"db.prod.local\",\r\n    \"username\": \"app_user\",\r\n    \"password\": \"secret\"\r\n  }\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/accesses",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accesses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all accesses",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Full DB Access\",\r\n  \"description\": \"Full access to production DB\",\r\n  \"resource_id\": {{resource_id}},\r\n  \"credentials\": {\r\n    \"host\": \"db.prod.local\",\r\n    \"username\": \"app_user\",\r\n    \"password\": \"secret\"\r\n  }\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/accesses",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accesses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get all accesses with limit and offset",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/accesses?limit=1&offset=1",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accesses"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1"
+                },
+                {
+                  "key": "offset",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get access",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"Full DB Access\",\r\n  \"description\": \"Full access to production DB\",\r\n  \"resource_id\": {{resource_id}},\r\n  \"credentials\": {\r\n    \"host\": \"db.prod.local\",\r\n    \"username\": \"app_user\",\r\n    \"password\": \"secret\"\r\n  }\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/accesses/{{access_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accesses",
+                "{{access_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete access",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/accesses/{{access_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "accesses",
+                "{{access_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Groups",
+      "item": [
+        {
+          "name": "Create group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"DB Admins\",\r\n  \"description\": \"Admins with DB access\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-group",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-group"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get groups",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
+          "request": {
+            "method": "GET",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"DB Admins\",\r\n  \"description\": \"Admins with DB access\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-groups",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-groups"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get groups with limit and offset",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-groups?limit=1&offset=1",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-groups"
+              ],
+              "query": [
+                {
+                  "key": "limit",
+                  "value": "1"
+                },
+                {
+                  "key": "offset",
+                  "value": "1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get group by id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Group",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"DB Admins v2\",\r\n  \"description\": \"Updated description\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Delete group",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"name\": \"DB Admins v2\",\r\n  \"description\": \"Updated description\"\r\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/right-groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "right-groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Conflicts",
+      "item": [
+        {
+          "name": "Add confliict",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/conflicts/{{conflicting_group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "conflicts",
+                "{{conflicting_group_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get group conflicts",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/conflicts",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "conflicts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove conflict",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/conflicts/{{conflicting_group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "conflicts",
+                "{{conflicting_group_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Group Access",
+      "item": [
+        {
+          "name": "Add access to group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/accesses/{{access_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "accesses",
+                "{{access_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get group accesses",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/accesses",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "accesses"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove access from group",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/groups/{{group_id}}/accesses",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "groups",
+                "{{group_id}}",
+                "accesses"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Group",
+      "item": [
+        {
+          "name": "Add user group",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/users/{{user_id}}/groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}",
+                "groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get user groups",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/users/{{user_id}}/groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}",
+                "groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Remove user group",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/users/{{user_id}}/groups/{{group_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}",
+                "groups",
+                "{{group_id}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Request",
+      "item": [
+        {
+          "name": "Create Access Request",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"request_id\": \"uuid\",\r\n  \"user_id\": 1,\r\n  \"target_type\": \"group\",\r\n  \"target_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/request",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "request"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Update Access Request Status",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"status\": \"pending\",\r\n  \"changed_by\": 0\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/request/{{request_id}}/update-status",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "request",
+                "{{request_id}}",
+                "update-status"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get All Requests Id",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/requests\n",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "requests\n"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Request",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/request/{{request_id}}",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "request",
+                "{{request_id}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get Request With History",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/request/{{request_id}}/history",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "request",
+                "{{request_id}}",
+                "history"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "User Permission",
+      "item": [
+        {
+          "name": "Get All User Permissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/users/{{user_id}}/permissions\n",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}",
+                "permissions\n"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Revoke User Permission",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/users/{{user_id}}/permissions",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "{{user_id}}",
+                "permissions"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Get User Permissions",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"user_id\": 1,\r\n  \"target_type\": \"group\",\r\n  \"target_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/internal/users/permissions\n",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "users",
+                "permissions\n"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Grant Permissions To User",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"user_id\": 1,\r\n  \"target_type\": \"group\",\r\n  \"target_id\": 1\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{base_url}}{{gateway_prefix}}/api/v1/internal/permissions/grant",
+              "host": [
+                "{{base_url}}{{gateway_prefix}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "internal",
+                "permissions",
+                "grant"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
