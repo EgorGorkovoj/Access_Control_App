@@ -8,7 +8,6 @@ LOG_DIR = Path('logs')
 LOG_DIR.mkdir(exist_ok=True, parents=True)
 
 LOG_FILE = LOG_DIR / 'app.log'
-print(LOG_FILE)
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
