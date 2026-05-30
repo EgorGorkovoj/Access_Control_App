@@ -1,7 +1,7 @@
 import httpx
 from app.domain.models.request_status import RequestStatus
 from app.domain.ports.request_status_updater import IRequestStatusUpdater
-from app.infrastructure.errors.permission_provider import PermissionProviderHTTPError
+from app.infrastructure.http.exceptions import PermissionProviderHTTPError
 from app.infrastructure.http.management_client import AccessManagementClient
 
 

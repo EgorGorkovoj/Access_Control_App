@@ -1,9 +1,9 @@
 import asyncio
 
-from app.infrastructure.config.settings import settings
-from app.infrastructure.dependencies import (
+from app.infrastructure.bootstrap.providers import (
     get_validation_service,
 )
+from app.infrastructure.config.settings import settings
 from app.infrastructure.http.management_client import AccessManagementClient
 from app.infrastructure.kafka.consumer import KafkaConsumerClient
 from app.infrastructure.kafka.handlers.access_request_handler import AccessRequestHandler

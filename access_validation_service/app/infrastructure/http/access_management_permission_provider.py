@@ -2,7 +2,7 @@ import httpx
 from app.application.dtos.access_request_event import TargetType
 from app.application.dtos.user_permissions import UserPermissionsDTO
 from app.domain.ports.permission_provider import IUserPermissionProvider
-from app.infrastructure.errors.permission_provider import (
+from app.infrastructure.http.exceptions import (
     PermissionProviderHTTPError,
     PermissionProviderResponseError,
 )
