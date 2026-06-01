@@ -5,6 +5,7 @@ from app.application.exceptions.validation import (
     GroupConflictError,
 )
 from app.domain.models.request_status import RequestStatus
+from app.domain.ports.exceptions import PermissionProviderHTTPError
 from app.domain.ports.permission_grant_provider import IPermissionGrantProvider
 from app.domain.ports.permission_provider import IUserPermissionProvider
 from app.domain.ports.request_status_updater import IRequestStatusUpdater
@@ -84,11 +85,21 @@ class ValidationService:
             await self._reject(dto.request_id)
             return
 
-        await self.permission_grant_provider.grant(
-            user_id=dto.user_id,
-            target_type=dto.target_type,
-            target_id=dto.target_id,
-        )
+        try:
+            await self.permission_grant_provider.grant(
+                user_id=dto.user_id,
+                target_type=dto.target_type,
+                target_id=dto.target_id,
+            )
+        except PermissionProviderHTTPError as error:
+            logger.exception(
+                'Validation infrastructure error: ' 'request_id=%s error=%s',
+                dto.request_id,
+                error,
+            )
+
+            await self._reject(dto.request_id)
+            return
 
         await self._approve(dto.request_id)
         logger.info(

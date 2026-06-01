@@ -1,11 +1,11 @@
 import httpx
 from app.application.dtos.access_request_event import TargetType
 from app.application.dtos.user_permissions import UserPermissionsDTO
-from app.domain.ports.permission_provider import IUserPermissionProvider
-from app.infrastructure.http.exceptions import (
+from app.domain.ports.exceptions import (
     PermissionProviderHTTPError,
     PermissionProviderResponseError,
 )
+from app.domain.ports.permission_provider import IUserPermissionProvider
 from app.infrastructure.http.management_client import AccessManagementClient
 
 
@@ -21,7 +21,7 @@ class AccessManagementPermissionProvider(IUserPermissionProvider):
                 '/api/v1/internal/users/permissions',
                 json={
                     'user_id': user_id,
-                    'target_type': target_type,
+                    'target_type': target_type.value,
                     'target_id': target_id,
                 },
             )

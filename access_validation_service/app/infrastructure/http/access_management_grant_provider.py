@@ -1,7 +1,7 @@
 import httpx
 from app.application.dtos.access_request_event import TargetType
+from app.domain.ports.exceptions import PermissionProviderHTTPError
 from app.domain.ports.permission_grant_provider import IPermissionGrantProvider
-from app.infrastructure.http.exceptions import PermissionProviderHTTPError
 from app.infrastructure.http.management_client import AccessManagementClient
 
 

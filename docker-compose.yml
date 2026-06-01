@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "${POSTGRES_PORT}:5432"  # можно убрать в будущем
+      - "${POSTGRES_PORT}:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
 
@@ -27,6 +27,7 @@ services:
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_NUM_PARTITIONS: 3
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
     volumes:
       - kafka_data:/var/lib/kafka/data
@@ -39,7 +40,7 @@ services:
       - db
       - kafka
     ports:
-      - "8001:8000"  # убрать позже
+      - "8001:8000"
     env_file:
       - ./access_management_service/.env
     environment:
@@ -48,7 +49,6 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_HOST: db
       POSTGRES_PORT: ${POSTGRES_PORT}
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
     restart: always
 
   access_validation_service:
@@ -59,7 +59,7 @@ services:
       - kafka
       - db
     environment:
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
     restart: always
 
   api_gateway:
@@ -74,8 +74,8 @@ services:
     env_file:
       - ./api_gateway_service/.env
     environment:
-      ACCESS_MANAGEMENT_SERVICE_URL: http://access_management_service:8000
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      ACCESS_MANAGEMENT_SERVICE_URL: ${ACCESS_MANAGEMENT_SERVICE_URL}
+      KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
     restart: always
 
 volumes:
